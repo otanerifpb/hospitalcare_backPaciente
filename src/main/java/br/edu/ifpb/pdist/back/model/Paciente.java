@@ -2,11 +2,13 @@ package br.edu.ifpb.pdist.back.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Past;
 import javax.validation.constraints.PastOrPresent;
 
@@ -15,13 +17,13 @@ import org.springframework.format.annotation.DateTimeFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @NoArgsConstructor
-//@EqualsAndHashCode(exclude = {"instituicao", "declaracoes"})
 @AllArgsConstructor
 @Entity
-public class Medico implements Serializable {
+public class Paciente implements Serializable {
 
     // Para garantir que a assinatura de um número seja única , para o uso do @Id
     private static final long serialVersionUID = 1L;
@@ -31,7 +33,7 @@ public class Medico implements Serializable {
     
     private String nome;
 
-    private String crm;
+    private String cpf;
 
     private String sexo;
 
@@ -40,7 +42,21 @@ public class Medico implements Serializable {
     @Past(message = "Data deve ser no passado")
     private Date dataNascimento;
 
-    private String especialidade;
+    private Email email;
 
     private String telefone;
+
+    // Relação entre Paciente e Anamnese
+    private String anamnese;
+    //@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_anamnese") // identificar coluna apenas no ManyToOne
+    //@ToString.Exclude
+    //private Set<Anamnese> anamineses = new HashSet<Anaminese>(); 
+
+    // Relação entre Paciente e Prontuário
+    private String prontuario;
+    //@OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    //@JoinColumn(name = "id_prontuario") // identificar coluna apenas no ManyToOne
+    //@ToString.Exclude
+    //private Set<Prontuario> prontuarios = new HashSet<Prontuario>(); 
 }
