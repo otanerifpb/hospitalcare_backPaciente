@@ -23,69 +23,69 @@ public class PacienteController {
     @Autowired
     private PacienteRepository pacienteRepository;
    
-    // Ativa o menu Médico na barra de navegação
+    // Ativa o menu Paciente na barra de navegação
     @ModelAttribute("menu")
     public String activeMenu(){
-        return "medico";
+        return "paciente";
     }
 
     // Rota para acessar a lista pelo menu
     @RequestMapping(method = RequestMethod.GET)
     public List<Paciente> listAll(ModelAndView mav) {
-        List<Paciente> opMedicos = medicoRepository.findAll();
-        return opMedicos;
+        List<Paciente> opPacientes = pacienteRepository.findAll();
+        return opPacientes;
     } 
 
     // Rota para acessar a lista ao usar o REDIRECT
     @RequestMapping("/")
     public List<Paciente> listAll(Model model) {
-       return medicoRepository.findAll();
+       return pacienteRepository.findAll();
     }
 
     // Rota para acessar o formunário
-    @RequestMapping("/formMedico")
-    public ModelAndView getFormEstu(Paciente medico, ModelAndView mav) {
-        mav.addObject("medico", medico);
-        mav.setViewName("medico/formMedico");
+    @RequestMapping("/formPaciente")
+    public ModelAndView getFormPaciente(Paciente paciente, ModelAndView mav) {
+        mav.addObject("paciente", paciente);
+        mav.setViewName("paciente/formPaciente");
         return mav;
     }
 
-    // Rota para cadastrar um Médico no Sitema
+    // Rota para cadastrar um Paciente no Sitema
     @RequestMapping(value="/save", method = RequestMethod.POST)
-    public ResponseEntity<Paciente> save(@RequestBody Paciente medico, RedirectAttributes redAttrs) {
-        Optional<Paciente> OpMedico = medicoRepository.findByCrm(medico.getCrm());
-        if (!OpMedico.isPresent()){       
-            Paciente novoMedico = medicoRepository.save(medico);
-            return ResponseEntity.status(HttpStatus.CREATED).body(novoMedico); 
+    public ResponseEntity<Paciente> save(@RequestBody Paciente paciente, RedirectAttributes redAttrs) {
+        Optional<Paciente> OpPaciente = pacienteRepository.findByCpf(paciente.getCpf());
+        if (!OpPaciente.isPresent()){       
+            Paciente novoPaciente = pacienteRepository.save(paciente);
+            return ResponseEntity.status(HttpStatus.CREATED).body(novoPaciente); 
         }
         return null;
    }
 
     // Rota para preencer os dados do formunlário de atualização com dados do banco 
     @RequestMapping("/{id}")
-    public Paciente getMedicoById(@PathVariable(value = "id") Integer id, ModelAndView mav) {
-        Optional<Paciente> opMedico = medicoRepository.findById(id);
-        if (opMedico.isPresent()) {
-            Paciente medico = opMedico.get();
-            return medico;
+    public Paciente getPacienteById(@PathVariable(value = "id") Integer id, ModelAndView mav) {
+        Optional<Paciente> opPaciente = pacienteRepository.findById(id);
+        if (opPaciente.isPresent()) {
+            Paciente paciente = opPaciente.get();
+            return paciente;
         } 
         return null;
     }
     
-    // Rota para atualizar um Médico na lista pelo formUpMedico
+    // Rota para atualizar um Paciente na lista pelo formUpPaciente
     @RequestMapping(value="/update", method = RequestMethod.POST)
-    public ResponseEntity<Paciente> update(@RequestBody Paciente medico, RedirectAttributes redAttrs) {
-        Paciente upDateMedico = medicoRepository.save(medico);
-        return ResponseEntity.status(HttpStatus.OK).body(upDateMedico); 
+    public ResponseEntity<Paciente> update(@RequestBody Paciente paciente, RedirectAttributes redAttrs) {
+        Paciente upDatePaciente = pacienteRepository.save(paciente);
+        return ResponseEntity.status(HttpStatus.OK).body(upDatePaciente); 
     }
 
-    // Rota para deletar um Médico da lista
+    // Rota para deletar um Paciente da lista
     @RequestMapping("/delete/{id}")
-    public void excluirMedico(@PathVariable(value = "id") Integer id) {
-        Optional<Paciente> OpMedico = medicoRepository.findById(id);
-        if (OpMedico.isPresent()){
-            Paciente medico = OpMedico.get();
-            medicoRepository.delete(medico);
+    public void excluirpaciente(@PathVariable(value = "id") Integer id) {
+        Optional<Paciente> OpPaciente = pacienteRepository.findById(id);
+        if (OpPaciente.isPresent()){
+            Paciente paciente = OpPaciente.get();
+            pacienteRepository.delete(paciente);
         }
     }
 }
